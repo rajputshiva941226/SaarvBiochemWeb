@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}Saarv Biochem — API Trading & Computational Services{% endblock %}</title>
+  <meta name="description" content="{% block description %}Premium Active Pharmaceutical Ingredients and computational chemistry services for drug discovery{% endblock %}" />
+  <link rel="stylesheet" href="/static/css/main.css" />
+  {% block head_extra %}{% endblock %}
+</head>
+<body class="hex-bg">
+
+<!-- ── NAV ─────────────────────────────────────────────────────────────────── -->
+<nav class="nav">
+  <a href="/" class="nav-logo">
+    <div class="nav-logo-mark">🧬</div>
+    Saarv Biochem
+  </a>
+
+  <ul class="nav-links">
+    <li><a href="/" class="{% if request.url.path == '/' %}active{% endif %}">Home</a></li>
+    <li><a href="/catalog" class="{% if '/catalog' in request.url.path %}active{% endif %}">API Catalog</a></li>
+    <li class="dropdown">
+      <a href="#" class="{% if '/services' in request.url.path %}active{% endif %}">Services ▾</a>
+      <div class="dropdown-menu">
+        <a href="/services/computational-chemistry">Computational Chemistry</a>
+        <a href="/services/computational-biology">Computational Biology</a>
+        <a href="/services/pharmacovigilance">Pharmacovigilance</a>
+        <a href="/services/custom-synthesis">Custom Synthesis</a>
+        <a href="/services/adme-tox">ADME/Tox Prediction</a>
+        <a href="/services/consulting">Consulting</a>
+      </div>
+    </li>
+    <li><a href="/contact">Contact</a></li>
+  </ul>
+
+  <div class="nav-cta">
+    <a href="/catalog" class="btn btn-ghost">Browse Catalog</a>
+    <a href="/enquiry" class="btn btn-primary">Enquiry</a>
+  </div>
+</nav>
+
+{% block content %}{% endblock %}
+
+<!-- ── FOOTER ──────────────────────────────────────────────────────────────── -->
+<footer class="footer">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo-text">Saarv Biochem</div>
+      <p>Premium Active Pharmaceutical Ingredients and cutting-edge computational chemistry & biology services for drug discovery and pharmaceutical innovation.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="/catalog">API Catalog</a></li>
+        <li><a href="/services/computational-chemistry">Comp. Chemistry</a></li>
+        <li><a href="/services/computational-biology">Comp. Biology</a></li>
+        <li><a href="/services/pharmacovigilance">Pharmacovigilance</a></li>
+        <li><a href="/services/custom-synthesis">Custom Synthesis</a></li>
+        <li><a href="/services/adme-tox">ADME/Tox</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="/">About</a></li>
+        <li><a href="/enquiry">Enquiry</a></li>
+        <li><a href="/contact">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <ul>
+        <li><a href="mailto:saarv.biochem1241@gmail.com">saarv.biochem1241@gmail.com</a></li>
+        <li><a href="tel:+916351171509">+91 6351171509</a></li>
+        <li>Nadiad, Gujarat — 387330</li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-bottom-text">© 2026 Saarv Biochem. All rights reserved.</span>
+    <span class="footer-gst">GST: 24BRXPV9356D1ZY</span>
+  </div>
+</footer>
+
+<script>
+  // Smooth scroll for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
+    });
+  });
+</script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

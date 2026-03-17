@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Enquiry Submitted — Saarv Biochem{% endblock %}
+{% block content %}
+<div style="min-height:calc(100vh - 68px);padding-top:68px;display:flex;align-items:center;justify-content:center;padding:120px 40px;">
+  <div style="max-width:520px;text-align:center;">
+    <div style="width:72px;height:72px;background:var(--lime-faint);border:2px solid var(--lime);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:32px;margin:0 auto 28px;">✓</div>
+    <h1 style="font-family:var(--font-display);font-weight:800;font-size:2rem;letter-spacing:-0.03em;margin-bottom:10px;">Enquiry Received!</h1>
+    <p style="color:var(--text-secondary);font-size:1rem;margin-bottom:24px;line-height:1.7;">
+      Thank you, <strong style="color:var(--text-primary);">{{ name }}</strong>. Your enquiry has been logged with reference <strong style="color:var(--lime);font-family:var(--font-mono);">{{ ref_id }}</strong>. Our team will respond within 24 hours.
+    </p>
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:28px;">
+      <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px;">Reference ID</div>
+      <div style="font-family:var(--font-mono);font-size:1.6rem;font-weight:700;color:var(--lime);">{{ ref_id }}</div>
+    </div>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+      <a href="/catalog" class="btn btn-primary">Browse More APIs</a>
+      <a href="/" class="btn btn-ghost">Return Home</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

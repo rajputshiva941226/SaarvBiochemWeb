@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+{% block title %}Send Enquiry — Saarv Biochem{% endblock %}
+{% block content %}
+<div class="contact-layout">
+  <aside class="contact-sidebar">
+    <div class="section-tag" style="margin-bottom:16px;">Enquiry</div>
+    <h2>Let's Work<br>Together</h2>
+    <p>Whether you're sourcing APIs, need computational support, or want expert consulting — send us your requirements and we'll respond within 24 hours.</p>
+    <div class="contact-info-list">
+      <div class="contact-info-item">
+        <div class="contact-info-icon">📧</div>
+        <div>
+          <div class="contact-info-label">Email</div>
+          <div class="contact-info-value">saarv.biochem1241@gmail.com</div>
+        </div>
+      </div>
+      <div class="contact-info-item">
+        <div class="contact-info-icon">📞</div>
+        <div>
+          <div class="contact-info-label">Phone</div>
+          <div class="contact-info-value">+91 6351171509</div>
+        </div>
+      </div>
+      <div class="contact-info-item">
+        <div class="contact-info-icon">📍</div>
+        <div>
+          <div class="contact-info-label">Address</div>
+          <div class="contact-info-value">Nadiad, Gujarat — 387330, India</div>
+        </div>
+      </div>
+      <div class="contact-info-item">
+        <div class="contact-info-icon">🕐</div>
+        <div>
+          <div class="contact-info-label">Response Time</div>
+          <div class="contact-info-value">Within 24 business hours</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:32px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;">
+      <div class="section-tag" style="margin-bottom:12px;">Services</div>
+      {% for service, url in [
+        ("API Catalog","/catalog"),
+        ("Computational Chemistry","/services/computational-chemistry"),
+        ("Computational Biology","/services/computational-biology"),
+        ("Pharmacovigilance","/services/pharmacovigilance"),
+        ("Custom Synthesis","/services/custom-synthesis"),
+        ("ADME/Tox Prediction","/services/adme-tox"),
+        ("Consulting","/services/consulting"),
+      ] %}
+      <a href="{{ url }}" style="display:block;font-size:0.82rem;color:var(--text-secondary);padding:5px 0;transition:color 0.15s;" onmouseover="this.style.color='var(--lime)'" onmouseout="this.style.color='var(--text-secondary)'">→ {{ service }}</a>
+      {% endfor %}
+    </div>
+  </aside>
+
+  <main class="contact-main">
+    <h3>Send an Enquiry</h3>
+    <p>Fill in your details and requirements. All fields marked * are required.</p>
+
+    <form action="/enquiry/submit" method="POST">
+      <input type="hidden" name="source_page" value="/enquiry" />
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">First Name *</label><input type="text" name="first_name" class="form-control" required /></div>
+        <div class="form-group"><label class="form-label">Last Name *</label><input type="text" name="last_name" class="form-control" required /></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Email *</label><input type="email" name="email" class="form-control" required /></div>
+        <div class="form-group"><label class="form-label">Phone</label><input type="tel" name="phone" class="form-control" /></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Company / Institute</label><input type="text" name="company" class="form-control" /></div>
+        <div class="form-group"><label class="form-label">Designation</label><input type="text" name="designation" class="form-control" /></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Country</label><input type="text" name="country" class="form-control" /></div>
+        <div class="form-group">
+          <label class="form-label">Enquiry Type *</label>
+          <select name="enquiry_type" class="form-control" id="enq-type">
+            <option value="service">Service Enquiry</option>
+            <option value="api_catalog">API / Chemical Enquiry</option>
+            <option value="custom">Custom Request</option>
+            <option value="general">General</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Service / Product Interest</label>
+        <select name="service_interest" class="form-control">
+          <option value="">Select…</option>
+          <option>API Trading</option>
+          <option>Computational Chemistry</option>
+          <option>Computational Biology</option>
+          <option>Pharmacovigilance</option>
+          <option>Custom Synthesis</option>
+          <option>ADME/Tox Prediction</option>
+          <option>Consulting</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div id="api-fields" style="display:none;">
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">Molecule Name / CAS</label><input type="text" name="molecule_name" class="form-control" /></div>
+          <div class="form-group"><label class="form-label">Required Quantity</label><input type="text" name="required_quantity" class="form-control" /></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">Grade</label>
+            <select name="required_grade" class="form-control"><option value="">Any</option><option>USP</option><option>EP</option><option>BP</option><option>IP</option><option>JP</option><option>Custom</option></select>
+          </div>
+          <div class="form-group"><label class="form-label">Purity</label><input type="text" name="purity_requirement" class="form-control" placeholder="e.g. ≥99.5%" /></div>
+        </div>
+      </div>
+      <div class="form-group"><label class="form-label">Subject</label><input type="text" name="subject" class="form-control" placeholder="Brief subject of your enquiry" /></div>
+      <div class="form-group"><label class="form-label">Message *</label><textarea name="message" class="form-control" rows="6" placeholder="Describe your requirements in detail…" required></textarea></div>
+      <div class="checkbox-row"><input type="checkbox" name="consent" id="consent" value="true" required /><label for="consent">I agree to receive communications from Saarv Biochem and accept the Privacy Policy.</label></div>
+      <div class="checkbox-row" style="margin-bottom:24px;"><input type="checkbox" name="newsletter" id="newsletter" value="true" /><label for="newsletter">Keep me updated on new APIs and service offerings.</label></div>
+      <button type="submit" class="btn btn-primary" style="width:100%;max-width:360px;justify-content:center;padding:14px;font-size:1rem;">Submit Enquiry →</button>
+    </form>
+  </main>
+</div>
+
+<script>
+  document.getElementById('enq-type').addEventListener('change', function() {
+    document.getElementById('api-fields').style.display = this.value === 'api_catalog' ? 'block' : 'none';
+  });
+  // Pre-fill from URL params
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('molecule')) document.querySelector('[name=molecule_name]').value = params.get('molecule');
+  if (params.get('cas')) document.querySelector('[name=cas_number]') && (document.querySelector('[name=molecule_name]').value += ' (CAS: ' + params.get('cas') + ')');
+  if (params.get('service')) {
+    const sel = document.querySelector('[name=service_interest]');
+    for (let opt of sel.options) { if (opt.text.toLowerCase().includes(params.get('service').replace('-',' '))) { opt.selected = true; break; } }
+  }
+</script>
+{% endblock %}

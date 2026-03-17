@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}ADME/Tox Prediction — Saarv Biochem{% endblock %}
+{% block content %}
+<div class="service-hero">
+  <div class="service-hero-inner container">
+    <div>
+      <div class="service-hero-badge">📊 Service</div>
+      <h1>ADME / Tox<br>Prediction</h1>
+      <p>De-risk your drug candidates early with comprehensive in-silico ADME and toxicology profiling. Predict clinical liabilities before investing in expensive in-vitro or in-vivo assays.</p>
+      <a href="/enquiry?service=adme-tox" class="btn btn-primary">Get a Profile</a>
+    </div>
+    <div class="service-hero-stat-box">
+      {% for num, label in [("Lipinski","Rule of Five",""),("hERG","Cardiac liability",""),("BBB","CNS penetration",""),("CYP","Metabolic profiling","")] %}
+      <div class="service-stat-item"><div class="num" style="color:var(--amber);">{{ num }}</div><div class="label">{{ label }}</div></div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container">
+    <div class="section-tag">Prediction Models</div>
+    <h2 class="section-title">Comprehensive ADME/Tox Coverage</h2>
+    <div class="features-grid" style="margin-top:32px;">
+      {% for num, title, desc in [
+        ("01","Absorption & Bioavailability","Caco-2 permeability, oral bioavailability, Pgp substrate probability, solubility (kinetic/thermodynamic), and GI absorption profiling."),
+        ("02","Distribution","Blood-brain barrier penetration, plasma protein binding (PPB), volume of distribution (Vd), and tissue distribution mapping."),
+        ("03","Metabolism","CYP450 inhibition (1A2, 2C9, 2C19, 2D6, 3A4), metabolic stability, reactive metabolite prediction, and glucuronidation/sulfation profiling."),
+        ("04","Excretion & PK","Half-life prediction, renal clearance, biliary excretion, PK parameter modeling, and drug accumulation risk assessment."),
+        ("05","Toxicology Screening","hERG liability, hepatotoxicity (DILI), mutagenicity (Ames/SRM), carcinogenicity, skin sensitization, and reproductive toxicity prediction."),
+        ("06","Drug-Likeness & Lead Profiling","Lipinski/Veber/Egan filters, synthetic accessibility scores, PAINS filter, pan-assay interference assessment, and promiscuity flagging."),
+      ] %}
+      <div class="feature-item">
+        <div class="feature-num">{{ num }}</div>
+        <h4>{{ title }}</h4>
+        <p>{{ desc }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background:var(--bg-2);border-top:1px solid var(--border);">
+  <div class="container">
+    <h2 class="section-title">Request ADME/Tox Profiling</h2>
+    <div class="enquiry-panel" style="max-width:700px;margin-top:28px;">
+      <h3>ADME/Tox Project Request</h3>
+      <p>Submit your compound(s) for a full in-silico ADME/Tox profile with detailed report.</p>
+      <form action="/enquiry/submit" method="POST">
+        <input type="hidden" name="enquiry_type" value="service" />
+        <input type="hidden" name="service_interest" value="ADME/Tox Prediction" />
+        <input type="hidden" name="source_page" value="/services/adme-tox" />
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">First Name *</label><input type="text" name="first_name" class="form-control" required /></div>
+          <div class="form-group"><label class="form-label">Last Name *</label><input type="text" name="last_name" class="form-control" required /></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">Email *</label><input type="email" name="email" class="form-control" required /></div>
+          <div class="form-group"><label class="form-label">Company</label><input type="text" name="company" class="form-control" /></div>
+        </div>
+        <div class="form-group"><label class="form-label">Compound(s) — CAS / SMILES</label><input type="text" name="molecule_name" class="form-control" placeholder="CAS numbers, SMILES, or upload available separately" /></div>
+        <div class="form-group"><label class="form-label">Specific Endpoints of Interest *</label><textarea name="message" class="form-control" rows="4" placeholder="e.g. hERG, BBB, CYP3A4 inhibition, hepatotoxicity, full ADME panel…" required></textarea></div>
+        <div class="checkbox-row"><input type="checkbox" name="consent" value="true" required /><label>I agree to the Privacy Policy.</label></div>
+        <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;padding:13px;">Submit Request</button>
+      </form>
+    </div>
+  </div>
+</section>
+{% endblock %}

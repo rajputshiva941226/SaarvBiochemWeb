@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+{% block title %}Admin — Enquiries Dashboard — Saarv Biochem{% endblock %}
+{% block content %}
+<div class="admin-wrap">
+  <div style="margin-bottom:28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;">
+    <div>
+      <div class="section-tag" style="margin-bottom:8px;">Admin</div>
+      <h1 style="font-family:var(--font-display);font-weight:800;font-size:2rem;letter-spacing:-0.03em;">Enquiries Dashboard</h1>
+    </div>
+    <a href="/admin/enquiries" class="btn btn-ghost">Refresh</a>
+  </div>
+
+  <!-- Stats -->
+  <div class="admin-stats">
+    <div class="admin-stat">
+      <div class="admin-stat-num">{{ stats.total }}</div>
+      <div class="admin-stat-label">Total Enquiries</div>
+    </div>
+    <div class="admin-stat">
+      <div class="admin-stat-num" style="color:var(--lime);">{{ stats.new }}</div>
+      <div class="admin-stat-label">New (Unread)</div>
+    </div>
+    <div class="admin-stat">
+      <div class="admin-stat-num" style="color:var(--amber);">{{ stats.in_progress }}</div>
+      <div class="admin-stat-label">In Progress</div>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;padding:16px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);">
+    <span style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-muted);align-self:center;">FILTER:</span>
+    {% for s, label in [("","All"),("new","New"),("in_progress","In Progress"),("quoted","Quoted"),("closed","Closed")] %}
+    <a href="/admin/enquiries?status={{ s }}{% if enquiry_type %}&enquiry_type={{ enquiry_type }}{% endif %}"
+       class="filter-chip {% if status == s %}active{% endif %}">{{ label }}</a>
+    {% endfor %}
+    <span style="margin-left:16px;font-family:var(--font-mono);font-size:0.7rem;color:var(--text-muted);align-self:center;">TYPE:</span>
+    {% for t, label in [("","All"),("api_catalog","API"),("service","Service"),("general","General")] %}
+    <a href="/admin/enquiries?enquiry_type={{ t }}{% if status %}&status={{ status }}{% endif %}"
+       class="filter-chip {% if enquiry_type == t %}active{% endif %}">{{ label }}</a>
+    {% endfor %}
+  </div>
+
+  <!-- Table -->
+  <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Ref</th>
+          <th>Name / Company</th>
+          <th>Email</th>
+          <th>Type</th>
+          <th>Subject</th>
+          <th>Molecule / Service</th>
+          <th>Qty / Grade</th>
+          <th>Status</th>
+          <th>Date</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for e in enquiries %}
+        <tr>
+          <td class="td-mono" style="color:var(--lime);">SB{{ '%05d' % e.id }}</td>
+          <td>
+            <div class="td-name">{{ e.first_name }} {{ e.last_name }}</div>
+            {% if e.company %}<div style="font-size:0.78rem;color:var(--text-muted);">{{ e.company }}</div>{% endif %}
+            {% if e.country %}<div style="font-family:var(--font-mono);font-size:0.68rem;color:var(--text-muted);">{{ e.country }}</div>{% endif %}
+          </td>
+          <td class="td-mono" style="font-size:0.78rem;">{{ e.email }}</td>
+          <td>
+            <span class="pill" style="background:var(--lime-faint);color:var(--lime);border:1px solid rgba(0,255,148,0.2);">
+              {{ e.enquiry_type | replace('_',' ') }}
+            </span>
+          </td>
+          <td style="max-width:200px;font-size:0.82rem;color:var(--text-secondary);">{{ (e.subject or '')[:60] }}{% if e.subject and e.subject|length > 60 %}…{% endif %}</td>
+          <td>
+            {% if e.molecule_name %}<div style="font-weight:600;font-size:0.85rem;color:var(--text-primary);">{{ e.molecule_name }}</div>{% endif %}
+            {% if e.cas_number %}<div class="td-mono" style="font-size:0.72rem;color:var(--text-muted);">CAS {{ e.cas_number }}</div>{% endif %}
+            {% if e.service_interest and not e.molecule_name %}<div style="font-size:0.82rem;color:var(--amber);">{{ e.service_interest }}</div>{% endif %}
+          </td>
+          <td class="td-mono" style="font-size:0.75rem;">
+            {% if e.required_quantity %}<div>{{ e.required_quantity }}</div>{% endif %}
+            {% if e.required_grade %}<div style="color:var(--text-muted);">{{ e.required_grade }}</div>{% endif %}
+            {% if e.purity_requirement %}<div style="color:var(--text-muted);">{{ e.purity_requirement }}</div>{% endif %}
+          </td>
+          <td>
+            <span class="status-badge status-{{ e.status }}">{{ e.status | replace('_',' ') }}</span>
+          </td>
+          <td class="td-mono" style="font-size:0.72rem;white-space:nowrap;">{{ e.created_at.strftime('%d %b %Y') }}</td>
+          <td>
+            <form action="/admin/enquiries/{{ e.id }}/status" method="POST" style="display:flex;gap:5px;align-items:center;">
+              <select name="status" class="form-control" style="padding:4px 8px;font-size:0.72rem;min-width:100px;height:auto;">
+                {% for s in ["new","in_progress","quoted","closed"] %}
+                <option value="{{ s }}" {% if e.status == s %}selected{% endif %}>{{ s | replace('_',' ') }}</option>
+                {% endfor %}
+              </select>
+              <button type="submit" class="btn btn-ghost" style="padding:4px 10px;font-size:0.72px;">✓</button>
+            </form>
+          </td>
+        </tr>
+        <!-- Expandable message row -->
+        <tr style="background:rgba(0,0,0,0.2);">
+          <td colspan="10" style="padding:8px 16px 16px;">
+            <div style="font-size:0.8rem;color:var(--text-secondary);line-height:1.6;border-left:2px solid var(--border);padding-left:12px;">
+              <strong style="font-family:var(--font-mono);font-size:0.68rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.08em;">Message:</strong> {{ e.message }}
+            </div>
+          </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="10" style="text-align:center;padding:60px;color:var(--text-muted);">No enquiries found.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  {% if total_pages > 1 %}
+  <div class="pagination" style="justify-content:flex-start;margin-top:24px;">
+    {% for p in range(1, total_pages + 1) %}
+    <a href="/admin/enquiries?page={{ p }}{% if status %}&status={{ status }}{% endif %}{% if enquiry_type %}&enquiry_type={{ enquiry_type }}{% endif %}"
+       class="page-btn {% if p == page %}active{% endif %}">{{ p }}</a>
+    {% endfor %}
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

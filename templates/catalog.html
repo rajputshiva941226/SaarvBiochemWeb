@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+{% block title %}API Catalog — Saarv Biochem{% endblock %}
+
+{% block content %}
+<div class="catalog-header">
+  <div class="catalog-header-inner">
+    <div class="section-tag" style="margin-bottom:10px;">API Catalog</div>
+    <h1>Active Pharmaceutical Ingredients</h1>
+    <p style="color:var(--text-secondary);font-size:0.95rem;margin-top:6px;">
+      {{ total }} molecules available · Pharmacopoeia-grade · PubChem verified structures
+    </p>
+    <div class="catalog-search-bar">
+      <span class="search-icon">🔍</span>
+      <input 
+        type="text" 
+        id="search-input"
+        placeholder="Search by name or CAS number…" 
+        value="{{ q }}"
+        autofocus
+      />
+    </div>
+  </div>
+</div>
+
+<div class="filter-bar">
+  <span class="filter-label">Grade:</span>
+  {% for g in grades %}
+  <a href="/catalog?grade={% if grade == g %}{% else %}{{ g }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if category %}&category={{ category }}{% endif %}" 
+     class="filter-chip grade-{{ g }} {% if grade == g %}active{% endif %}">{{ g }}</a>
+  {% endfor %}
+  {% if grade or q or category %}
+  <a href="/catalog" class="filter-chip" style="margin-left:auto;">✕ Clear filters</a>
+  {% endif %}
+  <span style="{% if not grade and not q and not category %}margin-left:auto;{% endif %}font-family:var(--font-mono);font-size:0.72rem;color:var(--text-muted);">
+    {{ total }} results
+  </span>
+</div>
+
+<div class="catalog-body">
+  <!-- Sidebar: category filter -->
+  <aside class="catalog-sidebar">
+    <div class="sidebar-title">Therapeutic Category</div>
+    <a href="/catalog?{% if q %}q={{ q }}&{% endif %}{% if grade %}grade={{ grade }}{% endif %}" 
+       class="sidebar-item {% if not category %}active{% endif %}">
+      All Categories
+      <span class="sidebar-count">{{ total }}</span>
+    </a>
+    {% for cat in categories %}
+    <a href="/catalog?category={{ cat | urlencode }}{% if q %}&q={{ q }}{% endif %}{% if grade %}&grade={{ grade }}{% endif %}"
+       class="sidebar-item {% if category == cat %}active{% endif %}">
+      {{ cat }}
+    </a>
+    {% endfor %}
+  </aside>
+
+  <!-- Grid -->
+  <main class="catalog-grid" id="mol-grid">
+    {% if molecules %}
+      {% for mol in molecules %}
+      <a href="/catalog/{{ mol.cas }}" class="mol-card">
+        <div class="mol-card-img">
+          <img 
+            src="https://cactus.nci.nih.gov/chemical/structure/{{ mol.cas | urlencode }}/image"
+            alt="{{ mol.name }}"
+            loading="lazy"
+            onerror="this.parentElement.innerHTML='<span class=mol-placeholder>⚗️</span>'"
+          />
+        </div>
+        <div class="mol-card-name">{{ mol.name }}</div>
+        <div class="mol-card-cas">CAS {{ mol.cas }}</div>
+        <div style="font-family:var(--font-mono);font-size:0.68rem;color:var(--text-muted);margin-bottom:8px;">{{ mol.category }}</div>
+        <div class="mol-card-grades">
+          {% for g in mol.grades %}
+          <span class="grade-badge grade-{{ g }}">{{ g }}</span>
+          {% endfor %}
+          {% if not mol.grades %}
+          <span style="font-size:0.68rem;color:var(--text-muted);font-family:var(--font-mono);">On request</span>
+          {% endif %}
+        </div>
+      </a>
+      {% endfor %}
+    {% else %}
+      <div style="grid-column:1/-1;padding:80px;text-align:center;color:var(--text-muted);">
+        <div style="font-size:3rem;margin-bottom:16px;">🔍</div>
+        <div style="font-family:var(--font-display);font-weight:700;font-size:1.3rem;color:var(--text-secondary);margin-bottom:8px;">No results found</div>
+        <p>Try adjusting your search or <a href="/enquiry" style="color:var(--lime);">request custom sourcing</a></p>
+      </div>
+    {% endif %}
+  </main>
+</div>
+
+{% if total_pages > 1 %}
+<div class="pagination" style="padding:0 0 48px;">
+  <a href="/catalog?page={{ page - 1 }}{% if q %}&q={{ q }}{% endif %}{% if grade %}&grade={{ grade }}{% endif %}{% if category %}&category={{ category | urlencode }}{% endif %}" 
+     class="page-btn {% if page == 1 %}disabled{% endif %}">←</a>
+  {% for p in range(1, total_pages + 1) %}
+    {% if p == page or p == 1 or p == total_pages or (p >= page - 2 and p <= page + 2) %}
+    <a href="/catalog?page={{ p }}{% if q %}&q={{ q }}{% endif %}{% if grade %}&grade={{ grade }}{% endif %}{% if category %}&category={{ category | urlencode }}{% endif %}"
+       class="page-btn {% if p == page %}active{% endif %}">{{ p }}</a>
+    {% elif p == page - 3 or p == page + 3 %}
+    <span style="color:var(--text-muted);padding:0 4px;">…</span>
+    {% endif %}
+  {% endfor %}
+  <a href="/catalog?page={{ page + 1 }}{% if q %}&q={{ q }}{% endif %}{% if grade %}&grade={{ grade }}{% endif %}{% if category %}&category={{ category | urlencode }}{% endif %}"
+     class="page-btn {% if page == total_pages %}disabled{% endif %}">→</a>
+</div>
+{% endif %}
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+  // Live search
+  let searchTimer;
+  document.getElementById('search-input').addEventListener('input', function() {
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(() => {
+      const params = new URLSearchParams(window.location.search);
+      params.set('q', this.value);
+      params.delete('page');
+      window.location.href = '/catalog?' + params.toString();
+    }, 400);
+  });
+</script>
+{% endblock %}

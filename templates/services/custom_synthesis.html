@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block title %}Custom Synthesis — Saarv Biochem{% endblock %}
+{% block content %}
+<div class="service-hero">
+  <div class="service-hero-inner container">
+    <div>
+      <div class="service-hero-badge">⚗️ Service</div>
+      <h1>Custom Chemical<br>Synthesis</h1>
+      <p>From milligrams to kilograms — precision synthesis of complex molecules, pharmaceutical intermediates, reference standards, and novel chemical entities with full analytical characterization.</p>
+      <a href="/enquiry?service=custom-synthesis" class="btn btn-primary">Request Synthesis</a>
+    </div>
+    <div class="service-hero-stat-box">
+      {% for num, label in [("mg–kg","All scales",""),("≥98%","Purity guaranteed",""),("NMR/MS","Full characterization",""),("GMP","GMP-ready options","")] %}
+      <div class="service-stat-item"><div class="num">{{ num }}</div><div class="label">{{ label }}</div></div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container">
+    <div class="section-tag">Synthesis Capabilities</div>
+    <h2 class="section-title">What We Can Build For You</h2>
+    <div class="features-grid" style="margin-top:32px;">
+      {% for num, title, desc in [
+        ("01","Medicinal Chemistry","Scaffold synthesis, bioisostere design, prodrug preparation, and SAR library generation for hit-to-lead and lead optimization programs."),
+        ("02","Reference Standards","High-purity (≥99%) reference compounds with full characterization (1H/13C NMR, HRMS, HPLC, elemental analysis) for regulatory submissions."),
+        ("03","Isotope Labeling","Synthesis of 13C, 15N, 2H, and 3H labeled compounds for metabolite identification, DMPK studies, and mechanistic research."),
+        ("04","Process Chemistry","Route scouting, reaction optimization, and scale-up from gram to kilogram scale. Green chemistry and cost-reduction pathway development."),
+        ("05","Building Blocks","Custom synthesis of heteroaromatic building blocks, chiral fragments, protected amino acids, and click chemistry handles."),
+        ("06","Impurity Synthesis","Synthesis and full characterization of process impurities, degradation products, and metabolites for ICH Q3A/Q3B compliant studies."),
+      ] %}
+      <div class="feature-item">
+        <div class="feature-num">{{ num }}</div>
+        <h4>{{ title }}</h4>
+        <p>{{ desc }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background:var(--bg-2);border-top:1px solid var(--border);">
+  <div class="container">
+    <h2 class="section-title">Request Custom Synthesis</h2>
+    <div class="enquiry-panel" style="max-width:700px;margin-top:28px;">
+      <h3>Synthesis Project Request</h3>
+      <p>Provide your target structure and specifications — we'll respond with feasibility and a quote.</p>
+      <form action="/enquiry/submit" method="POST">
+        <input type="hidden" name="enquiry_type" value="service" />
+        <input type="hidden" name="service_interest" value="Custom Synthesis" />
+        <input type="hidden" name="source_page" value="/services/custom-synthesis" />
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">First Name *</label><input type="text" name="first_name" class="form-control" required /></div>
+          <div class="form-group"><label class="form-label">Last Name *</label><input type="text" name="last_name" class="form-control" required /></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">Email *</label><input type="email" name="email" class="form-control" required /></div>
+          <div class="form-group"><label class="form-label">Company</label><input type="text" name="company" class="form-control" /></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">Required Quantity</label><input type="text" name="required_quantity" class="form-control" placeholder="e.g. 100mg, 5g" /></div>
+          <div class="form-group"><label class="form-label">Purity Requirement</label><input type="text" name="purity_requirement" class="form-control" placeholder="e.g. ≥98% HPLC" /></div>
+        </div>
+        <div class="form-group"><label class="form-label">Target Molecule / SMILES / CAS</label><input type="text" name="molecule_name" class="form-control" placeholder="CAS number, SMILES string, or IUPAC name" /></div>
+        <div class="form-group"><label class="form-label">Project Description *</label><textarea name="message" class="form-control" rows="4" placeholder="Intended use, timeline, special characterization requirements, regulatory grade needed…" required></textarea></div>
+        <div class="checkbox-row"><input type="checkbox" name="consent" value="true" required /><label>I agree to the Privacy Policy and consent to be contacted.</label></div>
+        <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;padding:13px;">Submit Synthesis Request</button>
+      </form>
+    </div>
+  </div>
+</section>
+{% endblock %}

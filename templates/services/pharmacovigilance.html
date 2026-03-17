@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% block title %}Pharmacovigilance Services — Saarv Biochem{% endblock %}
+{% block content %}
+<div class="service-hero">
+  <div class="service-hero-inner container">
+    <div>
+      <div class="service-hero-badge">🛡️ Service</div>
+      <h1>Pharmacovigilance<br>& Drug Safety</h1>
+      <p>End-to-end pharmacovigilance services — from adverse event processing to regulatory submissions. Ensure patient safety and maintain regulatory compliance throughout your product lifecycle.</p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;">
+        <a href="/enquiry?service=pharmacovigilance" class="btn btn-primary">Discuss Your Needs</a>
+        <a href="#services" class="btn btn-ghost">Our Services →</a>
+      </div>
+    </div>
+    <div class="service-hero-stat-box">
+      {% for num, label in [("ICH","E2A/E2B/E2C compliant"),("24hr","SUSAR reporting"),("EMA/FDA","Dual jurisdiction"),("100%","Data confidentiality")] %}
+      <div class="service-stat-item">
+        <div class="num" style="color:var(--amber);">{{ num }}</div>
+        <div class="label">{{ label }}</div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<section class="section" id="services">
+  <div class="container">
+    <div class="section-tag">Core Services</div>
+    <h2 class="section-title">Comprehensive Safety<br>Surveillance</h2>
+    <div class="features-grid" style="margin-top:32px;">
+      {% for num, title, desc in [
+        ("01","Adverse Event Processing","Collection, triage, and medical coding of Individual Case Safety Reports (ICSRs) using MedDRA terminology. Narrative writing and causality assessment."),
+        ("02","Signal Detection & Management","Quantitative and qualitative signal detection using WHO-UMC, EBGM, and PRR methods. Case clustering and signal validation workflows."),
+        ("03","Periodic Safety Reports","Preparation of PSURs, PBRERs, PADERs, and DSURs in accordance with ICH E2C(R2) and regional authority requirements."),
+        ("04","Risk Management Plans","Development and maintenance of RMPs, REMSs, and minimization measures. Effectiveness assessment and ongoing benefit-risk evaluation."),
+        ("05","Regulatory Submissions","E2B(R3) XML submissions to EudraVigilance, FDA FAERS, CDSCO, and MedDRA-coded submissions to global health authorities."),
+        ("06","Literature Monitoring","Systematic screening of published and unpublished medical literature for safety-relevant information using automated and manual review."),
+      ] %}
+      <div class="feature-item">
+        <div class="feature-num">{{ num }}</div>
+        <h4>{{ title }}</h4>
+        <p>{{ desc }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background:var(--bg-2);border-top:1px solid var(--border);">
+  <div class="container">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;">
+      <div>
+        <div class="section-tag">Compliance</div>
+        <h2 class="section-title">Regulatory Frameworks We Work In</h2>
+        <p style="color:var(--text-secondary);font-size:0.95rem;line-height:1.75;margin-bottom:24px;">Our PV team is trained in all major regulatory frameworks and maintains ongoing continuing education to track evolving guidance.</p>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          {% for item in ["ICH E2A, E2B(R3), E2C(R2), E2D, E2E, E2F","EMA GVP Modules I–XVI","FDA 21 CFR Part 312 & 314","CDSCO Pharmacovigilance Guidelines","WHO-UMC Signal Detection","MedDRA 26.x coding"] %}
+          <div style="display:flex;align-items:center;gap:10px;font-size:0.88rem;color:var(--text-secondary);">
+            <span style="color:var(--lime);font-weight:700;">✓</span> {{ item }}
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:32px;">
+        <div class="section-tag" style="margin-bottom:16px;">Safety Database Systems</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;">
+          {% for tool in ["Oracle Argus Safety","Veeva Vault Safety","ARISg","VigiLyze","Empirica Signal","EudraVigilance","FDA FAERS","Medidata Rave","MedDRA Browser","WHO-VigiBase"] %}
+          <span style="background:var(--bg);border:1px solid var(--border);border-radius:5px;padding:5px 12px;font-family:var(--font-mono);font-size:0.72rem;color:var(--text-secondary);">{{ tool }}</span>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h2 class="section-title">Request PV Services</h2>
+    <div class="enquiry-panel" style="max-width:700px;margin-top:28px;">
+      <h3>Pharmacovigilance Enquiry</h3>
+      <p>Tell us about your product stage and safety monitoring needs.</p>
+      <form action="/enquiry/submit" method="POST">
+        <input type="hidden" name="enquiry_type" value="service" />
+        <input type="hidden" name="service_interest" value="Pharmacovigilance" />
+        <input type="hidden" name="source_page" value="/services/pharmacovigilance" />
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">First Name *</label><input type="text" name="first_name" class="form-control" required /></div>
+          <div class="form-group"><label class="form-label">Last Name *</label><input type="text" name="last_name" class="form-control" required /></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">Email *</label><input type="email" name="email" class="form-control" required /></div>
+          <div class="form-group"><label class="form-label">Phone</label><input type="tel" name="phone" class="form-control" /></div>
+        </div>
+        <div class="form-group"><label class="form-label">Company</label><input type="text" name="company" class="form-control" /></div>
+        <div class="form-group">
+          <label class="form-label">PV Service Required</label>
+          <select name="subject" class="form-control">
+            <option>ICSR Processing</option><option>Signal Detection</option><option>PSUR / PBRER Preparation</option>
+            <option>Risk Management Plan</option><option>Literature Monitoring</option><option>Full PV Outsourcing</option><option>Other</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Message *</label><textarea name="message" class="form-control" rows="4" placeholder="Product name, development stage, jurisdiction, expected volume of cases…" required></textarea></div>
+        <div class="checkbox-row"><input type="checkbox" name="consent" value="true" required /><label>I consent to be contacted and accept the Privacy Policy.</label></div>
+        <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;padding:13px;">Submit Enquiry</button>
+      </form>
+    </div>
+  </div>
+</section>
+{% endblock %}

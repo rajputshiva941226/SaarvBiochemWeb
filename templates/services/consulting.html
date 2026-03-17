@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}Consulting Services — Saarv Biochem{% endblock %}
+{% block content %}
+<div class="service-hero">
+  <div class="service-hero-inner container">
+    <div>
+      <div class="service-hero-badge">🎯 Service</div>
+      <h1>Strategic Drug<br>Discovery Consulting</h1>
+      <p>Expert guidance from target selection through IND filing. We partner with startups, CROs, and established pharma companies to optimize strategy, reduce timelines, and navigate regulatory complexity.</p>
+      <a href="/enquiry?service=consulting" class="btn btn-primary">Schedule a Consultation</a>
+    </div>
+    <div class="service-hero-stat-box">
+      {% for num, label in [("IND","Filing support"),("CMC","Chemistry guidance"),("Strategy","Portfolio optimization"),("Training","Team workshops")] %}
+      <div class="service-stat-item"><div class="num" style="color:var(--amber);">{{ num }}</div><div class="label">{{ label }}</div></div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container">
+    <div class="section-tag">Consulting Areas</div>
+    <h2 class="section-title">Expert Guidance Across<br>the Drug Discovery Cycle</h2>
+    <div class="features-grid" style="margin-top:32px;">
+      {% for num, title, desc in [
+        ("01","Target Validation Strategy","Evidence-based target assessment, competitive landscape analysis, druggability scoring, and go/no-go decision frameworks for early-stage programs."),
+        ("02","Hit-to-Lead Optimization","SAR analysis, compound prioritization criteria, assay cascade design, and lead selection frameworks aligned with your program goals."),
+        ("03","CMC & Regulatory Strategy","Chemistry, Manufacturing and Controls documentation, IND/NDA preparation, quality system design, and regulatory filing strategy."),
+        ("04","Computational Workflow Design","Custom in-silico pipeline design, software stack recommendations, team upskilling, and validation of computational methods for your specific targets."),
+        ("05","Portfolio Management","Multi-program prioritization, resource allocation strategy, milestone planning, and scientific risk assessment for pipeline portfolios."),
+        ("06","Training & Workshops","Custom training programs in computational drug discovery, cheminformatics, regulatory affairs, and drug development for research teams."),
+      ] %}
+      <div class="feature-item">
+        <div class="feature-num">{{ num }}</div>
+        <h4>{{ title }}</h4>
+        <p>{{ desc }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background:var(--bg-2);border-top:1px solid var(--border);">
+  <div class="container">
+    <h2 class="section-title">Book a Consultation</h2>
+    <div class="enquiry-panel" style="max-width:700px;margin-top:28px;">
+      <h3>Consulting Enquiry</h3>
+      <p>Describe your challenge — we'll suggest the right engagement model.</p>
+      <form action="/enquiry/submit" method="POST">
+        <input type="hidden" name="enquiry_type" value="service" />
+        <input type="hidden" name="service_interest" value="Consulting" />
+        <input type="hidden" name="source_page" value="/services/consulting" />
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">First Name *</label><input type="text" name="first_name" class="form-control" required /></div>
+          <div class="form-group"><label class="form-label">Last Name *</label><input type="text" name="last_name" class="form-control" required /></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">Email *</label><input type="email" name="email" class="form-control" required /></div>
+          <div class="form-group"><label class="form-label">Designation</label><input type="text" name="designation" class="form-control" placeholder="e.g. CSO, Researcher" /></div>
+        </div>
+        <div class="form-group"><label class="form-label">Company / Institute</label><input type="text" name="company" class="form-control" /></div>
+        <div class="form-group">
+          <label class="form-label">Consulting Area</label>
+          <select name="subject" class="form-control">
+            <option>Target Validation</option><option>Hit-to-Lead Strategy</option><option>CMC / Regulatory</option>
+            <option>Computational Workflow Design</option><option>Portfolio Management</option><option>Training / Workshop</option><option>Other</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Your Challenge *</label><textarea name="message" class="form-control" rows="5" placeholder="Describe your current challenge, project stage, team size, and what outcome you need…" required></textarea></div>
+        <div class="checkbox-row"><input type="checkbox" name="consent" value="true" required /><label>I agree to the Privacy Policy and consent to be contacted.</label></div>
+        <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;padding:13px;">Submit Consulting Request</button>
+      </form>
+    </div>
+  </div>
+</section>
+{% endblock %}

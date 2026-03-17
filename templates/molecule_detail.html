@@ -1,0 +1,224 @@
+{% extends "base.html" %}
+{% block title %}{{ mol.name }} — CAS {{ mol.cas }} — Saarv Biochem{% endblock %}
+{% block description %}{{ mol.name }} (CAS {{ mol.cas }}) — {{ mol.category }} — available in {{ mol.grades | join(', ') or 'custom grade' }} from Saarv Biochem{% endblock %}
+
+{% block content %}
+<div class="detail-layout">
+
+  <!-- ── STICKY SIDEBAR ───────────────────────────────────────────────────── -->
+  <aside class="detail-sidebar">
+    <div class="detail-structure">
+      {% if pubchem.structure_url %}
+      <img 
+        src="{{ pubchem.structure_url }}" 
+        alt="{{ mol.name }} 2D structure"
+        id="structure-img"
+        style="max-width:100%;max-height:260px;object-fit:contain;"
+      />
+      {% else %}
+      <div style="text-align:center;color:var(--text-muted);">
+        <div style="font-size:48px;margin-bottom:12px;">⚗️</div>
+        <div style="font-family:var(--font-mono);font-size:0.78rem;">Structure loading…</div>
+      </div>
+      {% endif %}
+    </div>
+
+    {% if pubchem.pubchem_url %}
+    <a href="{{ pubchem.pubchem_url }}" target="_blank" rel="noreferrer"
+       style="display:flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:0.72rem;color:var(--text-muted);padding:10px;background:var(--bg-card);border:1px solid var(--border);border-radius:8px;margin-bottom:20px;transition:all 0.2s;"
+       onmouseover="this.style.borderColor='var(--lime)';this.style.color='var(--lime)'"
+       onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">
+      <span>🔗</span> View on PubChem (CID {{ pubchem.cid }})
+    </a>
+    {% endif %}
+
+    {% if pubchem.molecular_formula or pubchem.molecular_weight %}
+    <div class="detail-props">
+      {% if pubchem.molecular_formula %}
+      <div class="detail-prop">
+        <span class="detail-prop-label">Molecular Formula</span>
+        <span class="detail-prop-value">{{ pubchem.molecular_formula }}</span>
+      </div>
+      {% endif %}
+      {% if pubchem.molecular_weight %}
+      <div class="detail-prop">
+        <span class="detail-prop-label">Molecular Weight</span>
+        <span class="detail-prop-value">{{ pubchem.molecular_weight }} g/mol</span>
+      </div>
+      {% endif %}
+      {% if pubchem.xlogp is not none and pubchem.xlogp != '' %}
+      <div class="detail-prop">
+        <span class="detail-prop-label">XLogP</span>
+        <span class="detail-prop-value">{{ pubchem.xlogp }}</span>
+      </div>
+      {% endif %}
+      {% if pubchem.hbd != '' %}
+      <div class="detail-prop">
+        <span class="detail-prop-label">H-Bond Donors</span>
+        <span class="detail-prop-value">{{ pubchem.hbd }}</span>
+      </div>
+      {% endif %}
+      {% if pubchem.hba != '' %}
+      <div class="detail-prop">
+        <span class="detail-prop-label">H-Bond Acceptors</span>
+        <span class="detail-prop-value">{{ pubchem.hba }}</span>
+      </div>
+      {% endif %}
+      <div class="detail-prop">
+        <span class="detail-prop-label">CAS Number</span>
+        <span class="detail-prop-value">{{ mol.cas }}</span>
+      </div>
+    </div>
+    {% endif %}
+
+    <a href="/enquiry?molecule={{ mol.name | urlencode }}&cas={{ mol.cas }}" class="btn btn-primary" style="width:100%;justify-content:center;padding:12px;">
+      Request Quotation
+    </a>
+  </aside>
+
+  <!-- ── MAIN CONTENT ──────────────────────────────────────────────────────── -->
+  <main class="detail-main">
+    <div class="detail-breadcrumb">
+      <a href="/">Home</a> / <a href="/catalog">API Catalog</a> / {{ mol.name }}
+    </div>
+
+    <h1>{{ mol.name }}</h1>
+    <div class="detail-cas">CAS Registry Number: {{ mol.cas }}</div>
+
+    <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:28px;">
+      <span class="detail-cat-badge">{{ mol.category }}</span>
+      {% for g in mol.grades %}
+      <span class="grade-badge grade-{{ g }}" style="font-size:0.78rem;padding:4px 12px;">{{ g }}</span>
+      {% endfor %}
+      {% if not mol.grades %}
+      <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-muted);">Grade available on request</span>
+      {% endif %}
+    </div>
+
+    {% if pubchem.iupac_name %}
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:14px 18px;margin-bottom:24px;">
+      <div style="font-family:var(--font-mono);font-size:0.68rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px;">IUPAC Name</div>
+      <div style="font-family:var(--font-mono);font-size:0.82rem;color:var(--text-secondary);line-height:1.5;">{{ pubchem.iupac_name }}</div>
+    </div>
+    {% endif %}
+
+    {% if pubchem.description %}
+    <div class="detail-desc">{{ pubchem.description }}</div>
+    {% else %}
+    <div class="detail-desc" id="desc-placeholder">
+      {{ mol.name }} is a {{ mol.category.lower() }} agent available from Saarv Biochem in pharmacopoeia-grade quality. 
+      Contact us for detailed specifications, certificates of analysis, and regulatory documentation.
+    </div>
+    {% endif %}
+
+    <!-- Available Documentation -->
+    <div style="margin-bottom:36px;">
+      <div class="section-tag" style="margin-bottom:16px;">Available Documentation</div>
+      <div class="detail-docs">
+        {% for doc, icon, avail in [
+          ("Certificate of Analysis", "📋", True),
+          ("Impurity Profile", "🔍", True),
+          ("Stability Data", "📈", True),
+          ("DMF Support", "📁", True),
+          ("CoA (Batch-wise)", "✅", True),
+          ("Regulatory Filing", "🏛️", False),
+        ] %}
+        <div class="detail-doc {% if avail %}available{% endif %}">
+          <div class="detail-doc-icon">{{ icon }}</div>
+          <div class="detail-doc-title">{{ doc }}</div>
+          <div class="detail-doc-sub">{% if avail %}Available on request{% else %}Case by case{% endif %}</div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Enquiry Form -->
+    <div class="enquiry-panel" id="enquiry">
+      <h3>Request a Quote</h3>
+      <p>Fill in your requirements and we'll respond with pricing and availability within 24 hours.</p>
+
+      <form action="/enquiry/submit" method="POST">
+        <input type="hidden" name="enquiry_type" value="api_catalog" />
+        <input type="hidden" name="molecule_name" value="{{ mol.name }}" />
+        <input type="hidden" name="cas_number" value="{{ mol.cas }}" />
+        <input type="hidden" name="source_page" value="/catalog/{{ mol.cas }}" />
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">First Name *</label>
+            <input type="text" name="first_name" class="form-control" placeholder="Dr. John" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Last Name *</label>
+            <input type="text" name="last_name" class="form-control" placeholder="Smith" required />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Email *</label>
+            <input type="email" name="email" class="form-control" placeholder="you@institute.edu" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Phone</label>
+            <input type="tel" name="phone" class="form-control" placeholder="+1 555 000 0000" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Company / Institute</label>
+            <input type="text" name="company" class="form-control" placeholder="Pharma Corp Ltd" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Country</label>
+            <input type="text" name="country" class="form-control" placeholder="United States" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Required Quantity</label>
+            <input type="text" name="required_quantity" class="form-control" placeholder="e.g. 500g, 1kg, 100g" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Grade Required</label>
+            <select name="required_grade" class="form-control">
+              <option value="">Any grade</option>
+              {% for g in mol.grades %}
+              <option value="{{ g }}">{{ g }}</option>
+              {% endfor %}
+              <option value="custom">Custom / Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Purity Requirement</label>
+          <input type="text" name="purity_requirement" class="form-control" placeholder="e.g. ≥98%, ≥99.5% HPLC" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Additional Requirements *</label>
+          <textarea name="message" class="form-control" placeholder="Describe your project, timeline, any special documentation requirements…" required></textarea>
+        </div>
+
+        <div class="checkbox-row">
+          <input type="checkbox" name="consent" id="consent" value="true" required />
+          <label for="consent">I agree to receive communications from Saarv Biochem and accept the Privacy Policy.</label>
+        </div>
+        <div class="checkbox-row" style="margin-bottom:20px;">
+          <input type="checkbox" name="newsletter" id="newsletter" value="true" />
+          <label for="newsletter">Subscribe to updates on new APIs and services.</label>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;padding:13px;font-size:1rem;">
+          Submit Enquiry for {{ mol.name }}
+        </button>
+      </form>
+    </div>
+
+    <div style="margin-top:28px;padding-top:28px;border-top:1px solid var(--border);display:flex;gap:16px;flex-wrap:wrap;">
+      <a href="/catalog" class="btn btn-ghost">← Back to Catalog</a>
+      <a href="{{ pubchem.pubchem_url or '#' }}" target="_blank" class="btn btn-ghost" {% if not pubchem.pubchem_url %}style="opacity:0.4;pointer-events:none"{% endif %}>
+        PubChem Record ↗
+      </a>
+    </div>
+  </main>
+</div>
+{% endblock %}

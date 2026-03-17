@@ -1,0 +1,219 @@
+{% extends "base.html" %}
+{% block title %}Saarv Biochem — Drug Discovery Partners{% endblock %}
+
+{% block content %}
+
+<!-- ── HERO ──────────────────────────────────────────────────────────────── -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow">Nadiad, Gujarat · India · Est. 2022</div>
+    <h1>
+      Where <em>Chemistry</em><br>
+      Meets<br>
+      Computation
+    </h1>
+    <p class="hero-sub">
+      Trusted source for pharmacopoeia-grade Active Pharmaceutical Ingredients 
+      and in-silico drug discovery services — from molecule to market.
+    </p>
+    <div class="hero-actions">
+      <a href="/catalog" class="btn btn-primary" style="padding:11px 28px;font-size:0.95rem;">
+        Browse API Catalog
+      </a>
+      <a href="/enquiry" class="btn btn-ghost" style="padding:11px 28px;font-size:0.95rem;">
+        Send Enquiry
+      </a>
+    </div>
+
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-num">500+</div>
+        <div class="hero-stat-label">APIs in catalog</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">50+</div>
+        <div class="hero-stat-label">Global partners</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">99%</div>
+        <div class="hero-stat-label">Client satisfaction</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-visual">
+      <!-- Decorative molecular bond lines -->
+      <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:0.08" viewBox="0 0 500 600">
+        <line x1="250" y1="100" x2="150" y2="200" stroke="#00ff94" stroke-width="1.5"/>
+        <line x1="250" y1="100" x2="350" y2="200" stroke="#00ff94" stroke-width="1.5"/>
+        <line x1="150" y1="200" x2="150" y2="340" stroke="#00ff94" stroke-width="1.5"/>
+        <line x1="350" y1="200" x2="350" y2="340" stroke="#00ff94" stroke-width="1.5"/>
+        <line x1="150" y1="340" x2="250" y2="440" stroke="#00ff94" stroke-width="1.5"/>
+        <line x1="350" y1="340" x2="250" y2="440" stroke="#00ff94" stroke-width="1.5"/>
+        <circle cx="250" cy="100" r="8" fill="#00ff94"/>
+        <circle cx="150" cy="200" r="8" fill="#00ff94"/>
+        <circle cx="350" cy="200" r="8" fill="#00ff94"/>
+        <circle cx="150" cy="340" r="8" fill="#00ff94"/>
+        <circle cx="350" cy="340" r="8" fill="#00ff94"/>
+        <circle cx="250" cy="440" r="8" fill="#00ff94"/>
+        <line x1="80"  y1="270" x2="150" y2="270" stroke="#ffab00" stroke-width="1" stroke-dasharray="4,3"/>
+        <line x1="350" y1="270" x2="420" y2="270" stroke="#ffab00" stroke-width="1" stroke-dasharray="4,3"/>
+        <circle cx="80"  cy="270" r="5" fill="#ffab00" opacity="0.6"/>
+        <circle cx="420" cy="270" r="5" fill="#ffab00" opacity="0.6"/>
+      </svg>
+
+      <div class="hero-mol-grid">
+        {% set sample_mols = [
+          {"name":"Ciprofloxacin","cas":"85721-33-1"},
+          {"name":"Ibuprofen","cas":"15687-27-1"},
+          {"name":"Simvastatin","cas":"79902-63-9"},
+          {"name":"Letrozole","cas":"112809-51-5"},
+          {"name":"Melatonin","cas":"73-31-4"},
+          {"name":"Donepezil","cas":"120014-06-4"},
+          {"name":"Sofosbuvir","cas":"1190307-88-0"},
+          {"name":"Naloxone","cas":"465-65-6"},
+          {"name":"Lisinopril","cas":"83915-83-7"},
+        ] %}
+        {% for m in sample_mols %}
+        <div class="hero-mol-card">
+          <img 
+            src="https://cactus.nci.nih.gov/chemical/structure/{{ m.cas | urlencode }}/image"
+            alt="{{ m.name }}"
+            onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2280%22 height=%2280%22/>';"
+            loading="lazy"
+          />
+          <div class="mol-name">{{ m.name }}</div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── TRUST BAR ──────────────────────────────────────────────────────────── -->
+<div style="background:var(--bg-2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:18px 80px;">
+  <div style="display:flex;align-items:center;gap:40px;max-width:1280px;margin:0 auto;flex-wrap:wrap;">
+    <span style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.12em;">Pharmacopoeia Compliance</span>
+    {% for grade, color in [("USP","#60a5fa"),("EP","#4ade80"),("BP","#fbbf24"),("IP","#f472b6"),("JP","#a78bfa")] %}
+    <span style="font-family:var(--font-mono);font-size:0.78rem;font-weight:700;color:{{ color }};padding:4px 12px;border:1px solid {{ color }}33;border-radius:4px;background:{{ color }}0d;">{{ grade }}</span>
+    {% endfor %}
+    <span style="margin-left:auto;font-family:var(--font-mono);font-size:0.72rem;color:var(--text-muted);">GST: 24BRXPV9356D1ZY</span>
+  </div>
+</div>
+
+<!-- ── SERVICES ────────────────────────────────────────────────────────────── -->
+<section class="section" id="services">
+  <div class="container">
+    <div class="section-tag">What We Do</div>
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:16px;margin-bottom:0;">
+      <div>
+        <h2 class="section-title">End-to-End Drug<br>Discovery Services</h2>
+        <p class="section-sub">From raw API sourcing to in-silico optimization — one partner for your entire pipeline.</p>
+      </div>
+      <a href="/enquiry" class="btn btn-ghost">All Services →</a>
+    </div>
+
+    <div class="services-grid">
+      <a href="/catalog" class="service-tile" style="text-decoration:none;color:inherit;">
+        <div class="service-tile-icon">🧬</div>
+        <h3>API Trading</h3>
+        <p>Pharmacopoeia-grade Active Pharmaceutical Ingredients sourced globally with full regulatory documentation and CoA.</p>
+        <span class="service-tile-link">Browse Catalog →</span>
+      </a>
+      <a href="/services/computational-chemistry" class="service-tile amber" style="text-decoration:none;color:inherit;">
+        <div class="service-tile-icon">💻</div>
+        <h3>Computational Chemistry</h3>
+        <p>Molecular docking, QSAR modeling, virtual screening, and structure-based drug design to accelerate lead identification.</p>
+        <span class="service-tile-link">Learn More →</span>
+      </a>
+      <a href="/services/computational-biology" class="service-tile" style="text-decoration:none;color:inherit;">
+        <div class="service-tile-icon">🔬</div>
+        <h3>Computational Biology</h3>
+        <p>Protein modeling, genomics, target identification, and systems biology for mechanistic drug discovery.</p>
+        <span class="service-tile-link">Learn More →</span>
+      </a>
+      <a href="/services/pharmacovigilance" class="service-tile amber" style="text-decoration:none;color:inherit;">
+        <div class="service-tile-icon">🛡️</div>
+        <h3>Pharmacovigilance</h3>
+        <p>Signal detection, adverse event monitoring, ICSR processing, and regulatory safety reporting services.</p>
+        <span class="service-tile-link">Learn More →</span>
+      </a>
+      <a href="/services/custom-synthesis" class="service-tile" style="text-decoration:none;color:inherit;">
+        <div class="service-tile-icon">⚗️</div>
+        <h3>Custom Synthesis</h3>
+        <p>Multi-step organic synthesis from milligrams to kilograms — reference standards, intermediates, and novel entities.</p>
+        <span class="service-tile-link">Learn More →</span>
+      </a>
+      <a href="/services/adme-tox" class="service-tile amber" style="text-decoration:none;color:inherit;">
+        <div class="service-tile-icon">📊</div>
+        <h3>ADME/Tox Prediction</h3>
+        <p>In-silico pharmacokinetic and toxicological profiling to de-risk drug candidates early in development.</p>
+        <span class="service-tile-link">Learn More →</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── CATALOG STRIPE ──────────────────────────────────────────────────────── -->
+<div class="catalog-stripe">
+  <div class="catalog-stripe-inner container">
+    <div class="catalog-stripe-text">
+      <div class="section-tag" style="margin-bottom:10px;">API Catalog</div>
+      <h2>Browse Our Molecule Library</h2>
+      <p>100+ APIs spanning antibiotics, anticancer agents, antidiabetics, cardiovascular drugs, and more — with PubChem-verified 2D structures.</p>
+      <div style="margin-top:24px;display:flex;gap:12px;flex-wrap:wrap;">
+        <a href="/catalog" class="btn btn-primary">Browse All APIs</a>
+        <a href="/enquiry" class="btn btn-ghost">Custom Sourcing</a>
+      </div>
+    </div>
+    <div style="text-align:right;">
+      <div class="catalog-count">{{ stats.molecules }}+<span>Active Pharmaceutical Ingredients</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── WHY US ──────────────────────────────────────────────────────────────── -->
+<section class="section" id="why-us" style="background:var(--bg-2);">
+  <div class="container">
+    <div class="section-tag">Why Saarv Biochem</div>
+    <h2 class="section-title">Built for Serious<br>Pharmaceutical Research</h2>
+
+    <div class="why-grid">
+      {% for item in [
+        ("🏆","Quality Assured","Every batch ships with Certificate of Analysis, impurity profiling, and full pharmacopoeia documentation."),
+        ("⚡","Rapid Turnaround","Competitive timelines with streamlined sourcing — most in-stock APIs dispatched within 48 hours."),
+        ("👥","PhD-Level Expertise","Our team holds advanced degrees in medicinal chemistry, computational biology, and pharmaceutical sciences."),
+        ("🔒","NDA-Protected","All projects covered by comprehensive confidentiality agreements and strict data security protocols."),
+        ("💰","Transparent Pricing","No hidden fees. Volume discounts available. Flexible payment terms for verified institutions."),
+        ("🌐","Global Delivery","Serving research institutions and pharma companies in 30+ countries with seamless export documentation."),
+      ] %}
+      <div class="why-item">
+        <div class="why-icon">{{ item[0] }}</div>
+        <div>
+          <h4>{{ item[1] }}</h4>
+          <p>{{ item[2] }}</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA BANNER ─────────────────────────────────────────────────────────── -->
+<section style="padding:80px;background:linear-gradient(135deg, rgba(0,255,148,0.04) 0%, rgba(255,171,0,0.04) 100%);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+  <div class="container" style="display:grid;grid-template-columns:1fr auto;align-items:center;gap:48px;">
+    <div>
+      <div class="section-tag">Get Started Today</div>
+      <h2 class="section-title" style="margin-bottom:10px;">Ready to Accelerate<br>Your Research?</h2>
+      <p class="section-sub">Send us your requirements and receive a detailed quote within 24 hours. No commitment required.</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px;min-width:220px;">
+      <a href="/enquiry" class="btn btn-primary" style="justify-content:center;padding:13px 32px;font-size:1rem;">Send Enquiry</a>
+      <a href="/catalog" class="btn btn-ghost" style="justify-content:center;">Browse API Catalog</a>
+      <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-muted);text-align:center;">Response within 24 hours</div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

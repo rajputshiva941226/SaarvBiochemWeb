@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block title %}Computational Biology Services — Saarv Biochem{% endblock %}
+{% block content %}
+<div class="service-hero">
+  <div class="service-hero-inner container">
+    <div>
+      <div class="service-hero-badge">🔬 Service</div>
+      <h1>Computational<br>Biology</h1>
+      <p>Harness the power of bioinformatics, structural biology, and systems biology to identify targets, understand mechanisms, and accelerate translational research.</p>
+      <a href="/enquiry?service=computational-biology" class="btn btn-primary">Start a Project</a>
+    </div>
+    <div class="service-hero-stat-box">
+      {% for num, label in [("AlphaFold2","Structure prediction"),("NGS","Multi-omics analysis"),("PDB","Structural database"),("Network","Systems biology")] %}
+      <div class="service-stat-item"><div class="num">{{ num }}</div><div class="label">{{ label }}</div></div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container">
+    <div class="section-tag">Capabilities</div>
+    <h2 class="section-title">Bioinformatics & Structural Biology</h2>
+    <div class="features-grid" style="margin-top:32px;">
+      {% for num, title, desc in [
+        ("01","Protein Structure Prediction","AlphaFold2-based structure prediction, homology modeling (MODELLER, SWISS-MODEL), loop refinement, and quality validation for any therapeutic target."),
+        ("02","Genomics & Variant Analysis","WGS/WES variant calling, annotation with ClinVar/dbSNP, somatic mutation landscapes, copy number variation, and pharmacogenomics profiling."),
+        ("03","Transcriptomics","RNA-seq differential expression, pathway enrichment (GSEA, ORA), splicing analysis, and single-cell transcriptomic clustering and trajectory analysis."),
+        ("04","Protein-Protein Interactions","PPI network construction, hub identification, druggable interface prediction, and allosteric communication pathway mapping."),
+        ("05","Target Identification","Disease-gene association mining, phenotype scoring, multi-omics data integration, and novel therapeutic target prioritization."),
+        ("06","Systems Biology Modeling","Metabolic network reconstruction (COBRA), flux balance analysis, kinetic modeling, and multi-omics network analysis for pathway intervention."),
+      ] %}
+      <div class="feature-item">
+        <div class="feature-num">{{ num }}</div>
+        <h4>{{ title }}</h4>
+        <p>{{ desc }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background:var(--bg-2);border-top:1px solid var(--border);">
+  <div class="container">
+    <h2 class="section-title">Submit Your Project</h2>
+    <div class="enquiry-panel" style="max-width:700px;margin-top:28px;">
+      <h3>Computational Biology Request</h3>
+      <p>Share your biological question and we'll design the right analytical pipeline.</p>
+      <form action="/enquiry/submit" method="POST">
+        <input type="hidden" name="enquiry_type" value="service" />
+        <input type="hidden" name="service_interest" value="Computational Biology" />
+        <input type="hidden" name="source_page" value="/services/computational-biology" />
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">First Name *</label><input type="text" name="first_name" class="form-control" required /></div>
+          <div class="form-group"><label class="form-label">Last Name *</label><input type="text" name="last_name" class="form-control" required /></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">Email *</label><input type="email" name="email" class="form-control" required /></div>
+          <div class="form-group"><label class="form-label">Institute / Company</label><input type="text" name="company" class="form-control" /></div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Area of Interest</label>
+          <select name="subject" class="form-control">
+            <option>Protein Structure Prediction</option><option>Genomics/Variant Analysis</option><option>RNA-seq Analysis</option>
+            <option>Target Identification</option><option>Systems Biology</option><option>PPI Network Analysis</option><option>Other</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Project Description *</label><textarea name="message" class="form-control" rows="4" placeholder="Describe your biological question, available data, species, timeline…" required></textarea></div>
+        <div class="checkbox-row"><input type="checkbox" name="consent" value="true" required /><label>I consent to be contacted and accept the Privacy Policy.</label></div>
+        <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;padding:13px;">Submit Request</button>
+      </form>
+    </div>
+  </div>
+</section>
+{% endblock %}
