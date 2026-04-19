@@ -10,7 +10,7 @@
       <a href="/enquiry?service=adme-tox" class="btn btn-primary">Get a Profile</a>
     </div>
     <div class="service-hero-stat-box">
-      {% for num, label in [("Lipinski","Rule of Five",""),("hERG","Cardiac liability",""),("BBB","CNS penetration",""),("CYP","Metabolic profiling","")] %}
+      {% for num, label, _ in [("Lipinski","Rule of Five",""),("hERG","Cardiac liability",""),("BBB","CNS penetration",""),("CYP","Metabolic profiling","")] %}
       <div class="service-stat-item"><div class="num" style="color:var(--amber);">{{ num }}</div><div class="label">{{ label }}</div></div>
       {% endfor %}
     </div>

@@ -10,7 +10,7 @@
       <a href="/enquiry?service=custom-synthesis" class="btn btn-primary">Request Synthesis</a>
     </div>
     <div class="service-hero-stat-box">
-      {% for num, label in [("mg–kg","All scales",""),("≥98%","Purity guaranteed",""),("NMR/MS","Full characterization",""),("GMP","GMP-ready options","")] %}
+      {% for num, label, _ in [("mg–kg","All scales",""),("≥98%","Purity guaranteed",""),("NMR/MS","Full characterization",""),("GMP","GMP-ready options","")] %}
       <div class="service-stat-item"><div class="num">{{ num }}</div><div class="label">{{ label }}</div></div>
       {% endfor %}
     </div>

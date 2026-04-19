@@ -13,11 +13,16 @@
 <!-- ── NAV ─────────────────────────────────────────────────────────────────── -->
 <nav class="nav">
   <a href="/" class="nav-logo">
-    <div class="nav-logo-mark">🧬</div>
-    Saarv Biochem
+    <img src="/static/images/logo.png" alt="Saarv Biochem Logo" class="nav-logo-img" />
+    <span class="nav-logo-text">Saarv Biochem</span>
   </a>
 
-  <ul class="nav-links">
+  <!-- Hamburger toggle for mobile -->
+  <button class="nav-hamburger" id="nav-toggle" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
+
+  <ul class="nav-links" id="nav-links">
     <li><a href="/" class="{% if request.url.path == '/' %}active{% endif %}">Home</a></li>
     <li><a href="/catalog" class="{% if '/catalog' in request.url.path %}active{% endif %}">API Catalog</a></li>
     <li class="dropdown">
@@ -34,11 +39,14 @@
     <li><a href="/contact">Contact</a></li>
   </ul>
 
-  <div class="nav-cta">
+  <div class="nav-cta" id="nav-cta">
     <a href="/catalog" class="btn btn-ghost">Browse Catalog</a>
     <a href="/enquiry" class="btn btn-primary">Enquiry</a>
   </div>
 </nav>
+
+<!-- Mobile nav overlay -->
+<div class="nav-mobile-overlay" id="nav-overlay"></div>
 
 {% block content %}{% endblock %}
 
@@ -89,6 +97,41 @@
     a.addEventListener('click', e => {
       const target = document.querySelector(a.getAttribute('href'));
       if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
+    });
+  });
+
+  // Mobile hamburger menu
+  const toggle = document.getElementById('nav-toggle');
+  const navLinks = document.getElementById('nav-links');
+  const navCta = document.getElementById('nav-cta');
+  const overlay = document.getElementById('nav-overlay');
+
+  function closeMenu() {
+    toggle.classList.remove('open');
+    navLinks.classList.remove('open');
+    navCta.classList.remove('open');
+    overlay.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  toggle.addEventListener('click', () => {
+    const isOpen = toggle.classList.toggle('open');
+    navLinks.classList.toggle('open', isOpen);
+    navCta.classList.toggle('open', isOpen);
+    overlay.classList.toggle('open', isOpen);
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+  });
+
+  overlay.addEventListener('click', closeMenu);
+
+  // Mobile dropdown toggle
+  document.querySelectorAll('.nav-links .dropdown > a').forEach(a => {
+    a.addEventListener('click', e => {
+      if (window.innerWidth <= 768) {
+        e.preventDefault();
+        const li = a.closest('li');
+        li.classList.toggle('open');
+      }
     });
   });
 </script>
