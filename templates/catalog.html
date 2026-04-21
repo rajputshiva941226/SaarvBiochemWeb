@@ -59,11 +59,18 @@
       {% for mol in molecules %}
       <a href="/catalog/{{ mol.cas }}" class="mol-card">
         <div class="mol-card-img">
-          <img 
+          <img
             src="https://cactus.nci.nih.gov/chemical/structure/{{ mol.cas | urlencode }}/image"
             alt="{{ mol.name }}"
             loading="lazy"
-            onerror="this.parentElement.innerHTML='<span class=mol-placeholder>⚗️</span>'"
+            data-pubchem="https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/{{ mol.cas | urlencode }}/PNG"
+            onerror="
+              if(this.dataset.tried){
+                this.parentElement.innerHTML='<span class=mol-placeholder>⚗️</span>';
+              } else {
+                this.dataset.tried=1;
+                this.src=this.dataset.pubchem;
+              }"
           />
         </div>
         <div class="mol-card-name">{{ mol.name }}</div>
